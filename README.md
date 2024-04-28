@@ -1,9 +1,11 @@
 # Памятка по работе с проектом
 
 ## Начало работы с проектом
-Прежде всего сделайте `fork` шаблонного проекта. 
-Как это сделать можно прочитать [тут](https://docs.github.com/en/get-started/quickstart/fork-a-repo).
-Это самый быстрый способ создать репозиторий. После этого его можно локально клонировать себе на компьютер:
+Для начала работы с проектом необходимо создать репозиторий по [шаблону](https://github.com/ktsstudio/backend-school-template-project). Для этого используйте кнопку "Use this template".
+
+<img width="579" alt="image" src="https://github.com/ktsstudio/backend-school-template-project/assets/79798334/1566de18-2be5-4570-b327-fa212f909ab0">
+
+После этого его можно локально клонировать себе на компьютер:
 
 ``` sh
 git clone <ссылка на репозиторий>

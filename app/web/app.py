@@ -3,7 +3,8 @@ from aiohttp.web import (
 )
 
 from app.store.store import setup_store
-from app.web.config import Config, setup_config
+from app.web.config import setup_config
+
 from .routes import setup_routes
 
 __all__ = ("Application",)

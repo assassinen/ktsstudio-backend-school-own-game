@@ -1,7 +1,6 @@
 import asyncio
 import typing
 from asyncio import Task
-from typing import Optional
 
 if typing.TYPE_CHECKING:
     from app.store import Store
@@ -11,7 +10,7 @@ class Poller:
     def __init__(self, store: "Store"):
         self.store = store
         self.is_running = False
-        self.poll_task: Optional[Task] = None
+        self.poll_task: Task | None = None
 
     async def start(self):
         self.is_running = True
@@ -25,5 +24,4 @@ class Poller:
     async def poll(self):
         while self.is_running:
             await self.store.telegramm_api.poll()
-            # await self.store.telegramm_api.send_message(1)
             await asyncio.sleep(10)

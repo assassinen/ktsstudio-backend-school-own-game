@@ -1,20 +1,13 @@
-from uuid import UUID
+from sqlalchemy import BIGINT, Column, DateTime, Enum, String
 
-from sqlalchemy import Column, Integer, BIGINT, DateTime, String, Enum
-from sqlalchemy.dialects.postgresql import UUID
-
-from app.store.database.sqlalchemy_base import db
 from app.game.statuses import GameStatus
-
-
-def generate_uuid():
-    return str(UUID.uuid4())
+from app.store.database.sqlalchemy_base import db
 
 
 class Game(db):
-    __tablename__ = 'game'
+    __tablename__ = "game"
 
-    uuid = Column(String, name="uuid", primary_key=True, default=generate_uuid)
+    uuid = Column(String, primary_key=True)
     chat_id = Column(BIGINT, nullable=False)
     status = Column(Enum(GameStatus), nullable=False)
     create_date = Column(DateTime, nullable=False)

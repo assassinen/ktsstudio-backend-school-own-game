@@ -28,13 +28,12 @@ class GameManager:
             await self.app.store.telegramm_api.send_message(message)
 
     async def _create_new_game(self, update):
-        if update.object.text == '/create_game':
+        if update.object.text == "/create_game":
             await self.app.store.game_accessor.create_game(update.object.chat_id)
-            message = Message(chat_id=update.object.chat_id, text='Создали новую игру')
+            message = Message(chat_id=update.object.chat_id, text="Создали новую игру")
         else:
-            message = Message(chat_id=update.object.chat_id, text='Недопустимая команды для текущего статуса')
+            message = Message(chat_id=update.object.chat_id, text="Недопустимая команды для текущего статуса")
         return message
 
     async def _mock(self, update):
-        message = Message(chat_id=update.object.chat_id, text='Не найдена команда')
-        return message
+        return Message(chat_id=update.object.chat_id, text="Не найдена команда")

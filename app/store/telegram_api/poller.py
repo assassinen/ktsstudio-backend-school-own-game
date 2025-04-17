@@ -24,4 +24,4 @@ class Poller:
     async def poll(self):
         while self.is_running:
             await self.store.telegramm_api.poll()
-            await asyncio.sleep(10)
+            await asyncio.sleep(5)

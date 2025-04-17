@@ -6,6 +6,24 @@ telegram: @vananova
 ментор: Кирилл Лапушинский
 
 
+БД:
+создание базы в докере:
+docker run -p 5432:5432 --name own_game -e POSTGRES_PASSWORD=123 -d postgres
+вход в базу через psql:
+psql -h 0.0.0.0 -p 5532 -d postgres -U postgres
+создание базу:
+create database own_game;
+
+Алембик:
+Инициализация:
+alembic init --template async alembic
+Создание миграции:
+python -m alembic revision --autogenerate -m "Init" 
+Применение миграции:
+python -m alembic upgrage head
+
+
+
 graph TD
     A[Ожидание начала игры] --> B[Показ списка тем и вопросов]
     B --> C{Выбор первого игрока}

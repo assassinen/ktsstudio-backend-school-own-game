@@ -14,8 +14,19 @@ class BotConfig:
 
 
 @dataclass
+class Database:
+    drivername: str
+    host: str
+    database: str
+    username: str
+    password: str
+    port: str
+
+
+@dataclass
 class Config:
     bot: BotConfig | None = None
+    database: Database | None = None
 
 
 def setup_config(app: "Application", config_path: str):
@@ -26,5 +37,13 @@ def setup_config(app: "Application", config_path: str):
         bot=BotConfig(
             token=raw_config["bot"]["token"],
             url=raw_config["bot"]["url"],
+        ),
+        database=Database(
+            drivername=raw_config["database"]["drivername"],
+            host=raw_config["database"]["host"],
+            database=raw_config["database"]["database"],
+            username=raw_config["database"]["username"],
+            password=raw_config["database"]["password"],
+            port=raw_config["database"]["port"],
         ),
     )

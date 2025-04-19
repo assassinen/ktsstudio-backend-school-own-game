@@ -34,16 +34,6 @@ def setup_config(app: "Application", config_path: str):
         raw_config = yaml.safe_load(f)
 
     app.config = Config(
-        bot=BotConfig(
-            token=raw_config["bot"]["token"],
-            url=raw_config["bot"]["url"],
-        ),
-        database=Database(
-            drivername=raw_config["database"]["drivername"],
-            host=raw_config["database"]["host"],
-            database=raw_config["database"]["database"],
-            username=raw_config["database"]["username"],
-            password=raw_config["database"]["password"],
-            port=raw_config["database"]["port"],
-        ),
+        bot=BotConfig(**raw_config["bot"]),
+        database=Database(**raw_config["database"]),
     )

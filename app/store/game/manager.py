@@ -10,7 +10,7 @@ if typing.TYPE_CHECKING:
 class GameManager:
     def __init__(self, app: "Application"):
         self.app = app
-        self.game_status = {
+        self.game_handlers = {
             GameStatus.wait_game: self._mock,
             GameStatus.wait_player: self._mock,
             GameStatus.select_player: self._mock,
@@ -22,9 +22,9 @@ class GameManager:
 
     async def handle_updates(self, updates):
         for update in updates:
-            last_game = await self.app.store.game_accessor.get_last_game_by_chat_id(update)
+            last_game = await self.app.store.game_accessor.get_last_game_by_chat_id(update.object.chat_id)
             game_status = GameStatus.end_game if last_game is None else last_game.status
-            message = await self.game_status[game_status](update)
+            message = await self.game_handlers[game_status](update)
             await self.app.store.telegramm_api.send_message(message)
 
     async def _create_new_game(self, update):

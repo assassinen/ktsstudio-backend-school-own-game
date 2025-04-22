@@ -15,7 +15,7 @@ class Store:
 
         self.user = UserAccessor(app)
         self.telegramm_api = TelegramApiAccessor(app)
-        self.bots_manager = GameManager(app)
+        self.game_manager = GameManager(app)
         self.game_accessor = GameAccessor(app)
 
 

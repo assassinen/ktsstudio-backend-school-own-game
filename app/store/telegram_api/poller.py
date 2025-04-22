@@ -23,5 +23,6 @@ class Poller:
 
     async def poll(self):
         while self.is_running:
+            await self.store.game_manager.handle_time_event()
             await self.store.telegramm_api.poll()
-            await asyncio.sleep(5)
+            # await asyncio.sleep(5)

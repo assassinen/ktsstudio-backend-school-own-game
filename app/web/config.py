@@ -24,9 +24,19 @@ class Database:
 
 
 @dataclass
+class GameSettings:
+    min_player_counter: int
+    time_create_game: int
+    time_select_theme: int
+    time_give_answer: int
+    number_questions: int
+
+
+@dataclass
 class Config:
     bot: BotConfig | None = None
     database: Database | None = None
+    game_settings: GameSettings | None = None
 
 
 def setup_config(app: "Application", config_path: str):
@@ -36,4 +46,5 @@ def setup_config(app: "Application", config_path: str):
     app.config = Config(
         bot=BotConfig(**raw_config["bot"]),
         database=Database(**raw_config["database"]),
+        game_settings=GameSettings(**raw_config["game_settings"]),
     )

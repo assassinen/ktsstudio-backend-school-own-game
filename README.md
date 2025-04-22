@@ -1,25 +1,30 @@
 # Своя игра
 
-e-mail: vananova@mail.ru
-telegram: @vananova
+## e-mail: vananova@mail.ru
 
-ментор: Кирилл Лапушинский
+## telegram: @vananova
+
+## ментор: Кирилл Лапушинский
+
+## floy:
+
+![img.png](img.png)
 
 
-БД:
-создание базы в докере:
-docker run -p 5432:5432 --name own_game -e POSTGRES_PASSWORD=123 -d postgres
-вход в базу через psql:
+## БД:
+### создание базы в докере:
+docker run -p 5532:5432 --name own_game -e POSTGRES_PASSWORD=123 -d postgres
+### вход в базу через psql:
 psql -h 0.0.0.0 -p 5532 -d postgres -U postgres
-создание базу:
+### создание базу:
 create database own_game;
 
-Алембик:
-Инициализация:
+## Алембик:
+### инициализация:
 alembic init --template async alembic
-Создание миграции:
+### создание миграции:
 python -m alembic revision --autogenerate -m "Init" 
-Применение миграции:
+### применение миграции:
 python -m alembic upgrage head
 
 

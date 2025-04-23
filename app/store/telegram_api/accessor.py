@@ -93,10 +93,16 @@ class TelegramApiAccessor(BaseAccessor):
     #     await self.session.post(f"{self.base_url}/sendMessage", data=data)
 
     async def send_message(self, message: Message):
-        # reply = json.dumps({'inline_keyboard': [[
-        #     {'text': 'Выбрать тему', 'callback_data': 'ansv-1'},
-        #     {'text': 'Создать игру', 'callback_data': 'ansv-2'}]]})
+        # reply = {'inline_keyboard': [[
+        #     {'text': 'Выбрать темуfdsafdsav', 'callback_data': 'ansv-1'},
+        #     {'text': 'Создать игру', 'callback_data': 'ansv-2'}]]}
 
-        reply = {'inline_keyboard': []} if message.inline_data is None else {'inline_keyboard': [message.inline_data]}
+        # reply = {'inline_keyboard': [
+        #     [{'text': 'Начать игру', 'callback_data': 'start_game'}],
+        #     [{'text': 'Присоединиться', 'callback_data': 'connect_to_game'}]
+        # ]}
+        # print(123, message.inline_data)
+
+        reply = {'inline_keyboard': []} if message.inline_data is None else {'inline_keyboard': message.inline_data}
         data = {'chat_id': message.chat_id, 'text': message.text, 'reply_markup': json.dumps(reply)}
         await self.session.post(f"{self.base_url}/sendMessage", data=data)

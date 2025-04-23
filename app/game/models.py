@@ -60,7 +60,6 @@ class ThemeToGame(db):
     iteration: Mapped[int]
 
 
-
 class Question(db):
     __tablename__ = "question"
 
@@ -69,10 +68,32 @@ class Question(db):
     theme_uuid: Mapped[Theme] = mapped_column(ForeignKey("theme.uuid"))
 
 
+class QuestionToGame(db):
+    __tablename__ = "question_to_game"
+
+    uuid: Mapped[UUID] = mapped_column(primary_key=True)
+    game_uuid: Mapped[Game] = mapped_column(ForeignKey("game.uuid"))
+    question_uuid: Mapped[Theme] = mapped_column(ForeignKey("question.uuid"))
+    round: Mapped[int]
+
+
 class Answer(db):
     __tablename__ = "answer"
 
     uuid: Mapped[UUID] = mapped_column(primary_key=True)
     title: Mapped[str]
     is_correct: Mapped[bool]
-    question_uuid: Mapped[Theme] = mapped_column(ForeignKey("theme.uuid"))
+    question_uuid: Mapped[Theme] = mapped_column(ForeignKey("question.uuid"))
+
+
+class AnswerToGame(db):
+    __tablename__ = "answer_to_game"
+
+    uuid: Mapped[UUID] = mapped_column(primary_key=True)
+    game_uuid: Mapped[Game] = mapped_column(ForeignKey("game.uuid"))
+    user_uuid: Mapped[User] = mapped_column(ForeignKey("user.uuid"))
+    answer_uuid: Mapped[User] = mapped_column(ForeignKey("answer.uuid"))
+    create_date: Mapped[datetime]
+    update_date: Mapped[datetime]
+    round: Mapped[int]
+

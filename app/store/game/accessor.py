@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import select, update, desc
 
 from app.base.base_accessor import BaseAccessor
-from app.game.models import Game, UserToGame, User, Theme, ThemeToGame
+from app.game.models import Game, UserToGame, User, Theme, ThemeToGame, Question, Answer, AnswerToGame, QuestionToGame
 from app.game.statuses import GameStatus
 
 
@@ -107,12 +107,71 @@ class GameAccessor(BaseAccessor):
                 ThemeToGame.round == round).order_by(desc(ThemeToGame.iteration)).limit(limit)
             return await session.scalars(query)
 
-    # async def insert_theme_to_game(self, kwargs):
-    #     kwargs.update(uuid=uuid.uuid4(),
-    #                   create_date=datetime.now(),
-    #                   update_date=datetime.now())
-    #     print(kwargs)
-    #     async with self.app.database.session() as session:
-    #         theme_to_game = ThemeToGame(kwargs)
-    #         session.add(theme_to_game)
-    #         await session.commit()
+    async def update_theme_to_game(self, game_uuid, iteration, kwargs):
+        kwargs.update(update_date=datetime.now())
+        async with self.app.database.session() as session:
+            await session.execute(
+                update(ThemeToGame)
+                .where(ThemeToGame.game_uuid == game_uuid)
+                .where(ThemeToGame.iteration == iteration)
+                .values(kwargs)
+            )
+            await session.commit()
+
+    async def get_questions_by_theme_uuid(self, theme_uuid):
+        async with self.app.database.session() as session:
+            query = select(Question).filter(Question.theme_uuid == theme_uuid)
+            return await session.scalars(query)
+
+    async def get_question_by_uuid(self, uuid):
+        async with self.app.database.session() as session:
+            query = select(Question).filter(Question.uuid == uuid)
+            return await session.scalar(query)
+
+    async def get_answers_by_question_uuid(self, question_uuid):
+        async with self.app.database.session() as session:
+            query = select(Answer).filter(Answer.question_uuid == question_uuid)
+            return await session.scalars(query)
+
+    async def insert_answer_to_game(self, game_uuid, answer_uuid, user_uuid, round):
+        async with self.app.database.session() as session:
+            theme_to_game = AnswerToGame(
+                uuid=uuid.uuid4(),
+                game_uuid=game_uuid,
+                user_uuid=user_uuid,
+                answer_uuid=answer_uuid,
+                create_date=datetime.now(),
+                update_date=datetime.now(),
+                round=round,
+            )
+            session.add(theme_to_game)
+            await session.commit()
+
+    async def get_answer_to_game(self, game_uuid, answer_uuid, user_uuid, round):
+        async with self.app.database.session() as session:
+            query = select(
+                AnswerToGame).filter(
+                AnswerToGame.game_uuid == game_uuid).filter(
+                AnswerToGame.answer_uuid == answer_uuid).filter(
+                AnswerToGame.user_uuid == user_uuid).filter(
+                AnswerToGame.round == round)
+            return await session.scalar(query)
+
+    async def insert_question_to_game(self, game_uuid, question_uuid, round):
+        async with self.app.database.session() as session:
+            question_to_game = QuestionToGame(
+                uuid=uuid.uuid4(),
+                game_uuid=game_uuid,
+                question_uuid=question_uuid,
+                round=round,
+            )
+            session.add(question_to_game)
+            await session.commit()
+
+    async def get_question_by_game_uuid_and_round(self, game_uuid, round):
+        async with self.app.database.session() as session:
+            query = select(
+                QuestionToGame).filter(
+                QuestionToGame.game_uuid == game_uuid).filter(
+                QuestionToGame.round == round)
+            return await session.scalar(query)

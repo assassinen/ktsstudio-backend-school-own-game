@@ -5,7 +5,7 @@ from aiohttp import TCPConnector
 from aiohttp.client import ClientSession
 
 from app.base.base_accessor import BaseAccessor
-from app.store.telegram_api.dataclasses import Message, CallbackQuery, UpdateMessage, UpdateObject
+from app.store.telegram_api.dataclasses import CallbackQuery, Message, UpdateMessage, UpdateObject
 from app.store.telegram_api.poller import Poller
 
 if typing.TYPE_CHECKING:
@@ -42,40 +42,34 @@ class TelegramApiAccessor(BaseAccessor):
             # print(json.dumps(update, indent=2, ensure_ascii=False))
             self.offset = update["update_id"] + 1
             if "message" in update:
-                try:
-                    updates.append(
-                        UpdateObject(
-                            id=update["update_id"],
-                            type="message",
-                            object=UpdateMessage(
-                                id=update["message"]["message_id"],
-                                from_id=update["message"]["from"]["id"],
-                                chat_id=update["message"]["chat"]["id"],
-                                username=update["message"]["from"]["username"],
-                                text=update["message"]["text"],
-                            ),
-                        )
+                updates.append(
+                    UpdateObject(
+                        id=update["update_id"],
+                        type="message",
+                        object=UpdateMessage(
+                            id=update["message"]["message_id"],
+                            from_id=update["message"]["from"]["id"],
+                            chat_id=update["message"]["chat"]["id"],
+                            username=update["message"]["from"]["username"],
+                            text=update["message"]["text"],
+                        ),
                     )
-                except Exception as e:
-                    print(e)
+                )
             if "callback_query" in update:
-                try:
-                    updates.append(
-                        UpdateObject(
-                            id=update["update_id"],
-                            type="callback_query",
-                            object=CallbackQuery(
-                                id=update["callback_query"]["message"]["message_id"],
-                                from_id=update["callback_query"]["from"]["id"],
-                                chat_id=update["callback_query"]["message"]["chat"]["id"],
-                                username=update["callback_query"]["from"]["username"],
-                                text=update["callback_query"]["message"]["text"],
-                                data=update["callback_query"]["data"]
-                            ),
-                        )
+                updates.append(
+                    UpdateObject(
+                        id=update["update_id"],
+                        type="callback_query",
+                        object=CallbackQuery(
+                            id=update["callback_query"]["message"]["message_id"],
+                            from_id=update["callback_query"]["from"]["id"],
+                            chat_id=update["callback_query"]["message"]["chat"]["id"],
+                            username=update["callback_query"]["from"]["username"],
+                            text=update["callback_query"]["message"]["text"],
+                            data=update["callback_query"]["data"],
+                        ),
                     )
-                except Exception as e:
-                    print(123, e)
+                )
         return updates
 
     async def _get_long_poll_service(self):
@@ -103,6 +97,6 @@ class TelegramApiAccessor(BaseAccessor):
         # ]}
         # print(123, message.inline_data)
 
-        reply = {'inline_keyboard': []} if message.inline_data is None else {'inline_keyboard': message.inline_data}
-        data = {'chat_id': message.chat_id, 'text': message.text, 'reply_markup': json.dumps(reply)}
+        reply = {"inline_keyboard": []} if message.inline_data is None else {"inline_keyboard": message.inline_data}
+        data = {"chat_id": message.chat_id, "text": message.text, "reply_markup": json.dumps(reply)}
         await self.session.post(f"{self.base_url}/sendMessage", data=data)

@@ -26,6 +26,7 @@ class CallbackQuery:
     text: str
     data: str
 
+
 @dataclass
 class UpdateObject:
     id: int

@@ -3,7 +3,7 @@ from uuid import UUID
 
 import sqlalchemy as sa
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.game.statuses import GameStatus
 from app.store.database.sqlalchemy_base import db
@@ -96,4 +96,3 @@ class AnswerToGame(db):
     create_date: Mapped[datetime]
     update_date: Mapped[datetime]
     round: Mapped[int]
-

@@ -1,5 +1,26 @@
+import typing
+
+from app.store.database.database import Database
+
+if typing.TYPE_CHECKING:
+    from app.web.app import Application
+
+
 class Store:
-    def __init__(self, *args, **kwargs):
+    def __init__(self, app: "Application"):
+        from app.store.game.accessor import GameAccessor
+        from app.store.game.manager import GameManager
+        from app.store.telegram_api.accessor import TelegramApiAccessor
         from app.users.accessor import UserAccessor
 
-        self.user = UserAccessor(self)
+        self.user = UserAccessor(app)
+        self.telegramm_api = TelegramApiAccessor(app)
+        self.game_manager = GameManager(app)
+        self.game_accessor = GameAccessor(app)
+
+
+def setup_store(app: "Application") -> None:
+    app.database = Database(app)
+    app.on_startup.append(app.database.connect)
+    # app.on_cleanup.append(app.database.disconnect)
+    app.store = Store(app)

@@ -1,0 +1,21 @@
+{
+  "update_id": 299042106,
+  "message": {
+    "message_id": 1088,
+    "from": {
+      "id": 7345338421,
+      "is_bot": false,
+      "first_name": "Иван",
+      "last_name": "Новиков",
+      "username": "c0ch0net",
+      "language_code": "ru"
+    },
+    "chat": {
+      "id": -1002362438003,
+      "title": "Своя игра",
+      "type": "supergroup"
+    },
+    "date": 1745338256,
+    "text": "/сав"
+  }
+}
